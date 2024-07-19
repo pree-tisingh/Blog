@@ -1,39 +1,419 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog Posts</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-image: url("https://example.com/background-image.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: "Montserrat", sans-serif;
+      }
+
+      .blogForm {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-image: url("https://example.com/form-background.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .blogForm h2 {
+        text-align: center;
+        font-family: "Playfair Display", serif;
+      }
+
+      .blogForm button {
+        width: 100%;
+        padding: 10px;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: 600;
+        border: 1px solid grey;
+        background-color: crimson;
+        cursor: pointer;
+      }
+
+      .blogForm button:hover {
+        background-color: rgb(165, 66, 66);
+      }
+
+      .formGroup {
+        margin-bottom: 15px;
+      }
+
+      .formGroup label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+
+      .formGroup input,
+      .formGroup textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .showContent {
+        display: block;
+      }
+
+      .showComments {
+        display: block;
+      }
+
+      #blogPosts {
+        max-width: 800px;
+        margin: 20px auto;
+      }
+
+      .blogPost {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        padding: 15px;
+        margin-top: 20px;
+        color: white;
+        position: relative;
+        background-color: rgb(44, 42, 42);
+      }
+
+      .toggleContentButton {
+        position: absolute;
+        cursor: pointer;
+        top: 12px;
+        right: 45px;
+        font-size: 25px;
+      }
+
+      .deleteContainerButton {
+        position: absolute;
+        cursor: pointer;
+        top: 12px;
+        right: 10px;
+        font-size: 25px;
+        color: red;
+      }
+
+      .blogPost h2 {
+        display: inline;
+        margin-right: 10px;
+        font-size: 22px;
+        font-family: "Playfair Display", serif;
+      }
+
+      .deleteButton {
+        color: red;
+        cursor: pointer;
+        font-size: 18px;
+        top: 12px;
+        right: 10px;
+      }
+
+      .heading-title {
+        font-size: 20px;
+      }
+
+      .content {
+        display: none;
+        margin-top: 15px;
+        margin-bottom: 10px;
+      }
+
+      .author {
+        font-size: 16px;
+      }
+
+      .content.showContent {
+        display: block;
+      }
+
+      .comments {
+        margin-top: 20px;
+      }
+
+      .comment {
+        border-top: 1px solid #eee;
+        padding: 10px 0;
+      }
+
+      .comment .deleteButton {
+        color: red;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+
+      .commentForm button {
+        padding: 8px;
+        border-radius: 30px;
+        background-color: rgb(56, 128, 196);
+        font-size: 15px;
+        border: none;
+      }
+
+      .commentForm button:hover {
+        background-color: rgb(11, 85, 110);
+      }
+    </style>
+  </head>
+  <body>
     <header>
-        <h1>Welcome to the Blog</h1>
+      <h1>Welcome to the Blog</h1>
     </header>
 
     <main id="blogPosts">
-        <form id="blogForm" class="blogForm">
-            <h2>Add New Blog Post</h2>
-            <div class="formGroup">
-                <label for="title"> Blog Title:</label>
-                <input type="text" id="title" name="title" required>
-            </div>
-            <div class="formGroup">
-                <label for="author"> Blog Author:</label>
-                <input type="text" id="author" name="author" required>
-            </div>
-            <div class="formGroup">
-                <label for="content"> Blog Content:</label>
-                <textarea id="content" name="content" rows="5" required></textarea>
-            </div>
-            <button type="submit">Submit</button>
-        </form>
+      <form id="blogForm" class="blogForm">
+        <h2>Add New Blog Post</h2>
+        <div class="formGroup">
+          <label for="title">Blog Title:</label>
+          <input type="text" id="title" name="title" required />
+        </div>
+        <div class="formGroup">
+          <label for="author">Blog Author:</label>
+          <input type="text" id="author" name="author" required />
+        </div>
+        <div class="formGroup">
+          <label for="content">Blog Content:</label>
+          <textarea id="content" name="content" rows="5" required></textarea>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Your Blog Name</p>
-    </footer>
+    <script>
+      document
+        .getElementById("blogForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
 
-    <script src="blog.js"></script>
-</body>
+          const formData = new FormData(this);
+          const formDataObject = {};
+          formData.forEach((value, key) => {
+            formDataObject[key] = value;
+          });
+
+          try {
+            const response = await fetch("/api/blogposts", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formDataObject),
+            });
+
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+
+            const newBlogPost = await response.json();
+            console.log("New blog post added:", newBlogPost);
+
+            this.reset();
+            renderBlogPost(newBlogPost);
+          } catch (error) {
+            console.error("Error adding blog post:", error);
+          }
+        });
+
+      async function fetchBlogPosts() {
+        try {
+          const response = await fetch("/api/blogposts");
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const blogPosts = await response.json();
+          blogPosts.forEach(renderBlogPost);
+        } catch (error) {
+          console.error("Error fetching blog posts:", error);
+        }
+      }
+
+      fetchBlogPosts();
+
+      function renderBlogPost(blogPost) {
+        const blogPostsContainer = document.getElementById("blogPosts");
+
+        const postElement = document.createElement("article");
+        postElement.classList.add("blogPost");
+
+        const titleElement = document.createElement("h2");
+        titleElement.textContent = blogPost.title;
+
+        const authorElement = document.createElement("span");
+        authorElement.classList.add("author");
+        authorElement.textContent = `by ${blogPost.author}`;
+
+        const contentElement = document.createElement("div");
+        contentElement.classList.add("content", "hidden");
+        contentElement.textContent = blogPost.content;
+
+        const toggleContentButton = document.createElement("span");
+        toggleContentButton.classList.add("toggleContentButton");
+        toggleContentButton.textContent = "+";
+        toggleContentButton.addEventListener("click", function () {
+          contentElement.classList.toggle("showContent");
+          toggleContentButton.textContent = contentElement.classList.contains(
+            "showContent"
+          )
+            ? "-"
+            : "+";
+          commentsSection.classList.toggle("showComments");
+          commentForm.classList.toggle("hidden");
+        });
+
+        const deleteContainerButton = document.createElement("span");
+        deleteContainerButton.classList.add("deleteContainerButton");
+        deleteContainerButton.textContent = "x";
+        deleteContainerButton.addEventListener("click", function () {
+          deleteBlogPost(blogPost.id, postElement);
+        });
+
+        const commentsSection = document.createElement("div");
+        commentsSection.classList.add("comments", "hidden");
+        commentsSection.innerHTML = `
+        <h3>Comments</h3>
+        <div id="comments_${blogPost.id}"></div>
+      `;
+
+        const commentForm = document.createElement("form");
+        commentForm.id = `commentForm_${blogPost.id}`;
+        commentForm.classList.add("commentForm", "hidden");
+        commentForm.innerHTML = `
+        <label for="comment_${blogPost.id}">Add a comment:</label>
+        <input id="comment_${blogPost.id}" name="content" rows="1" required></input>
+        <button type="submit">Comment</button>
+      `;
+
+        commentForm.addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const formData = new FormData(this);
+          const formDataObject = {};
+          formData.forEach((value, key) => {
+            formDataObject[key] = value;
+          });
+          formDataObject.postId = blogPost.id;
+
+          try {
+            const response = await fetch("/api/comments", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formDataObject),
+            });
+
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+
+            const newComment = await response.json();
+            console.log("New comment added:", newComment);
+
+            this.reset();
+            renderComment(newComment, `comments_${blogPost.id}`);
+          } catch (error) {
+            console.error("Error adding comment:", error);
+          }
+        });
+
+        commentsSection.appendChild(commentForm);
+        postElement.appendChild(titleElement);
+        postElement.appendChild(authorElement);
+        postElement.appendChild(toggleContentButton);
+        postElement.appendChild(deleteContainerButton);
+        postElement.appendChild(contentElement);
+        postElement.appendChild(commentsSection);
+        blogPostsContainer.appendChild(postElement);
+
+        async function renderComments(postId) {
+          try {
+            const response = await fetch(`/api/comments?postId=${postId}`);
+            if (!response.ok) {
+              throw new Error(`Network response was not ok`);
+            }
+            const comments = await response.json();
+            comments.forEach((comment) =>
+              renderComment(comment, `comments_${postId}`)
+            );
+          } catch (error) {
+            console.error(`Error fetching comments for post ${postId}:`, error);
+          }
+        }
+
+        renderComments(blogPost.id);
+      }
+
+      function renderComment(comment, containerId) {
+        const container = document.getElementById(containerId);
+
+        const commentElement = document.createElement("div");
+        commentElement.classList.add("comment");
+        commentElement.innerHTML = `
+        <p>${comment.content}</p>
+        <span class="deleteButton" onclick="deleteComment(${comment.id}, '${containerId}')">Delete</span>
+      `;
+
+        container.appendChild(commentElement);
+      }
+
+      async function deleteComment(commentId, containerId) {
+        try {
+          const response = await fetch(`/api/comments/${commentId}`, {
+            method: "DELETE",
+          });
+
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          const deletedComment = await response.json();
+          console.log("Comment deleted:", deletedComment);
+
+          const container = document.getElementById(containerId);
+          container.innerHTML = "";
+          renderComments(deletedComment.postId);
+        } catch (error) {
+          console.error("Error deleting comment:", error);
+        }
+      }
+
+      async function deleteBlogPost(postId, postElement) {
+        try {
+          const response = await fetch(`/api/blogposts/${postId}`, {
+            method: "DELETE",
+          });
+
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          const deletedBlogPost = await response.json();
+          console.log("Blog post deleted:", deletedBlogPost);
+
+          postElement.remove();
+        } catch (error) {
+          console.error("Error deleting blog post:", error);
+        }
+      }
+    </script>
+  </body>
 </html>

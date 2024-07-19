@@ -14,7 +14,7 @@ const comment = sequelize.define('Comment',{
     },
     author:{
         type: Sequelize.STRING,
-        allowNull:false,
+        defaultValue: 'massy',
     }
 });
 

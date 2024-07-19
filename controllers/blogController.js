@@ -1,13 +1,10 @@
-// controllers/blogController.js
-
-const BlogPost = require('../models/Blog'); // Assuming you have a BlogPost model
-
-// Get all blog posts
+const BlogPost = require('../models/Blog'); 
+const Comment = require('../models/Comments');
 exports.getAllBlog = async (req, res) => {
     try {
         const blogPosts = await BlogPost.findAll({
             include: [{
-                model: Comment, // Assuming you have set up a Comment model and association
+                model: Comment, 
                 as: 'comments'
             }]
         });
@@ -18,7 +15,6 @@ exports.getAllBlog = async (req, res) => {
     }
 };
 
-// Create a new blog post
 exports.createBlog = async (req, res) => {
     const { title, author, content } = req.body;
     try {
@@ -30,7 +26,7 @@ exports.createBlog = async (req, res) => {
     }
 };
 
-// Delete a blog post by ID
+
 exports.deleteBlog = async (req, res) => {
     const blogPostId = req.params.id;
     try {
